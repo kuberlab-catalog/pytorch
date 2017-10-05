@@ -9,14 +9,13 @@ src_path: cntk/src
 
 data_path: data
 
-cntk_version:
-  value: "2.1"
+pytorch_versiob:
+  value: "0.2.0"
   wizard:
-    name: "CNTK version"
+    name: "PyTorch version"
     kind: select
     options:
-    - "2.1"
-    - "2.0"
+    - "0.2.0"
 
 python_version:
   value: "2"
