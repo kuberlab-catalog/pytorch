@@ -1,13 +1,5 @@
 from __future__ import print_function
+import torch
 
-import cntk
-
-
-
-def main(_):
-    print("CNTK: "+cntk.__version__)
-    print(cntk.minus([1, 2, 3], [4, 5, 6]).eval())
-
-
-if __name__ == '__main__':
-    tf.app.run()
+x = torch.Tensor(5, 3)
+print(x)
