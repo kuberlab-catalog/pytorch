@@ -32,15 +32,20 @@ spec:
       allowFail: true
       {{- if eq .python_version.value "3" }}
       images:
-        gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-gpu-py3"
-        cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py3"
+        gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py3"
+        cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
       {{- end }}
       {{- if eq .python_version.value "2" }}
       images:
-        gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-gpu-py2"
-        cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py2"
+        gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py2"
+        cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py2"
       {{- end }}
-      command: python
+      {{- if eq .python_version.value "3" }}
+      command: python3
+      {{- end }}
+      {{- if eq .python_version.value "2" }}
+      command: python2
+      {{- end }}
       args: hello.py
       workdir: "$SRC_DIR"
       resources:
@@ -64,13 +69,13 @@ spec:
     displayName: Jupyter
     {{- if eq .python_version.value "3"}}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py3"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py3"
+      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
+      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
     {{- end }}
     {{- if eq .python_version.value "2" }}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-gpu-py2"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py2"
+      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py2"
+      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py2"
     {{- end }}
     resources:
       accelerators:
@@ -103,13 +108,13 @@ spec:
     displayName: Serving
     {{- if eq .python_version.value "3"}}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-gpu-py3"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py3"
+      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py3"
+      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
     {{- end }}
     {{- if eq .python_version.value "2"}}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-gpu-py2"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py2"
+      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py2"
+      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py2"
     {{- end }}
     workdir: "$SRC_DIR"
     command: python

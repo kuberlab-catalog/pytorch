@@ -9,7 +9,7 @@ src_path: pytorch/src
 
 data_path: data
 
-pytorch_versiob:
+pytorch_version:
   value: "0.2.0"
   wizard:
     name: "PyTorch version"
