@@ -69,7 +69,7 @@ spec:
     displayName: Jupyter
     {{- if eq .python_version.value "3"}}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
+      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py3"
       cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
     {{- end }}
     {{- if eq .python_version.value "2" }}
