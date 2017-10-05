@@ -73,6 +73,9 @@ spec:
       cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_versiob.value}}-cpu-py2"
     {{- end }}
     resources:
+      accelerators:
+        gpu: 0
+        dedicated_gpu: true
       requests:
         cpu: 100m
         memory: 256Mi
