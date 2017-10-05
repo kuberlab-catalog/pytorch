@@ -1,0 +1,16 @@
+Description: PyTorch template
+Engine: gotpl
+Home: http://kuberlab.com
+Icon: https://storage.googleapis.com/kuberlab-images/torch-logo.png
+Keywords:
+- kubernets
+- PyTorch
+- template
+- kuberlab
+- kuberlabapptemplate
+Maintainers:
+- Email: agunin@kuberlab.com
+  Name: Gunin Alexander
+Name: PyTorch
+Version: 1.0.0
+Type: mlapp-v2

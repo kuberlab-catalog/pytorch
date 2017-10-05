@@ -1,0 +1,33 @@
+storage:
+ value: default
+ wizard:
+   name: "Storage Configuration"
+   kind: cluster_storage
+
+src: https://github.com/kuberlab-catalog/cntk
+src_path: cntk/src
+
+data_path: data
+
+cntk_version:
+  value: "2.1"
+  wizard:
+    name: "CNTK version"
+    kind: select
+    options:
+    - "2.1"
+    - "2.0"
+
+python_version:
+  value: "2"
+  wizard:
+    name: "Python version"
+    kind: select
+    options:
+    - "2"
+    - "3"
+
+serving_port: 9000
+
+packages:
+ - "git+https://github.com/kuberlab/python-mlboardclient.git"
