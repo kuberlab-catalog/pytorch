@@ -4,8 +4,8 @@ storage:
    name: "Storage Configuration"
    kind: cluster_storage
 
-src: https://github.com/kuberlab-catalog/cntk
-src_path: cntk/src
+src: https://github.com/kuberlab-catalog/pytorch
+src_path: pytorch/src
 
 data_path: data
 
