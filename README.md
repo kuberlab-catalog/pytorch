@@ -1,4 +1,4 @@
-# PyTORCH ML project
+# PyTORCH
 
 This is the base PyTORCH project.
 
