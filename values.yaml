@@ -26,4 +26,4 @@ python_version:
 serving_port: 9000
 
 packages:
- - "git+https://github.com/kuberlab/python-mlboardclient.git"
+- "git+https://github.com/kuberlab/python-mlboardclient.git"
