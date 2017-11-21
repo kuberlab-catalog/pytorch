@@ -4,9 +4,6 @@ storage:
    name: "Storage Configuration"
    kind: cluster_storage
 
-src: https://github.com/kuberlab-catalog/pytorch
-src_path: pytorch/src
-
 data_path: data
 
 pytorch_version:
