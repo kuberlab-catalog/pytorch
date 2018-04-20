@@ -4,15 +4,13 @@ storage:
    name: "Storage Configuration"
    kind: cluster_storage
 
-data_path: data
-
 pytorch_version:
-  value: "0.2.0"
+  value: "0.3.1"
   wizard:
     name: "PyTorch version"
     kind: select
     options:
-    - "0.2.0"
+    - "0.3.1"
 
 python_version:
   value: "2"
@@ -23,7 +21,19 @@ python_version:
     - "2"
     - "3"
 
-serving_port: 9000
+src:
+  value: https://github.com/kuberlab/pytorch-examples
+  wizard:
+    name: "Source Code"
+    kind: git
 
-packages:
-- "git+https://github.com/kuberlab/python-mlboardclient.git"
+dataset:
+ value: ''
+ version: ''
+ workspace: ''
+ wizard:
+   name: "Dataset configuration"
+   kind: dataset
+
+# Pip packages may be specified here in format that pip accepts.
+packages: []

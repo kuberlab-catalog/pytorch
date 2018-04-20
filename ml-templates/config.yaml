@@ -9,20 +9,8 @@ spec:
       - "{{ $value }}"
       {{- end }}
       manager: "pip{{.python_version.value}}"
+  default_mount_path: "/notebooks"
   tasks:
-  - name: prepare-data
-    resources:
-    - name: upload
-      replicas: 1
-      restartPolicy: Never
-      maxRestartCount: 1
-      allowFail: true
-      images:
-        cpu: busybox
-      command: "echo \"Uploading Data\";echo \"Done!!!\""
-      workdir: "$DATA_DIR"
-      volumes:
-      - name: data
   - name: standalone
     resources:
     - name: worker
@@ -32,20 +20,15 @@ spec:
       allowFail: true
       {{- if eq .python_version.value "3" }}
       images:
-        gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py3"
-        cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
       {{- end }}
       {{- if eq .python_version.value "2" }}
       images:
-        gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py2"
-        cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py2"
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
       {{- end }}
-      {{- if eq .python_version.value "3" }}
-      command: python3 hello.py
-      {{- end }}
-      {{- if eq .python_version.value "2" }}
-      command: python2 hello.py
-      {{- end }}
+      command: python hello_pytorch.py
       workdir: "$SRC_DIR"
       resources:
         accelerators:
@@ -62,13 +45,13 @@ spec:
     displayName: Jupyter
     {{- if eq .python_version.value "3"}}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py3"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
+      gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
+      cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
     {{- end }}
     {{- if eq .python_version.value "2" }}
     images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py2"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py2"
+      gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
+      cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
     {{- end }}
     resources:
       accelerators:
@@ -85,58 +68,28 @@ spec:
       protocol: TCP
       name: http
     default_volume_mapping: true
-  serving:
-  - name: serving
-    displayName: Serving
-    {{- if eq .python_version.value "3"}}
-    images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py3"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py3"
-    {{- end }}
-    {{- if eq .python_version.value "2"}}
-    images:
-      gpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-gpu-py2"
-      cpu: "kuberlab/mlboard-jupyter-pytorch:{{.pytorch_version.value}}-cpu-py2"
-    {{- end }}
-    workdir: "$SRC_DIR"
-    command: python hello.py
-    resources:
-      accelerators:
-        gpu: 0
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 1000m
-        memory: 4Gi
-    ports:
-    - port: {{ .serving_port }}
-      targetPort: {{ .serving_port }}
-      protocol: TCP
-      name: http
-    default_volume_mapping: true
   volumes:
   - isLibDir: false
-    mountPath: /notebooks/training
     name: training
     clusterStorage: {{ .storage.value }}
-    subPath: training
   - gitRepo:
-      repository: https://github.com/kuberlab-catalog/pytorch
+      repository: {{ gitRepo .src.value }}
     isLibDir: false
-    mountPath: /notebooks/src
     name: src
-    subPath: pytorch/src
+    subPath: {{ gitSubPath .src.value }}
   - isLibDir: true
-    mountPath: /notebooks/lib
     name: lib
     clusterStorage: {{ .storage.value }}
-    subPath: lib
   - isLibDir: false
-    mountPath: /notebooks/data
     name: data
+    {{- if .dataset.value }}
+    datasetFS:
+      workspace: {{ .dataset.workspace }}
+      dataset: {{ .dataset.value }}
+      version: {{ .dataset.version }}
+    {{- else }}
     clusterStorage: {{ .storage.value }}
-    subPath: {{ .data_path }}
+    {{- end }}
   - isLibDir: false
     mountPath: /notebooks
     name: code
