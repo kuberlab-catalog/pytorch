@@ -30,7 +30,7 @@ spec:
       {{- end }}
       command: >-
         python spatial_transformer.py --batch-size 64 --epochs 10
-        --data-dir $DATA_DIR --training_dir $TRAINING_DIR/$BUILD_ID
+        --data-dir $DATA_DIR --training_dir $TRAINING_DIR
       workdir: "$SRC_DIR"
       resources:
         accelerators:
