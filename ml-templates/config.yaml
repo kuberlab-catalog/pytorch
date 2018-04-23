@@ -28,7 +28,9 @@ spec:
         gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
         cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
       {{- end }}
-      command: python hello_pytorch.py
+      command: >-
+        python spatial_transformer.py --batch-size 64 --epochs 10
+        --data-dir $DATA_DIR --training_dir $TRAINING_DIR/$BUILD_ID
       workdir: "$SRC_DIR"
       resources:
         accelerators:
