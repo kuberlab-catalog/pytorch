@@ -28,9 +28,9 @@ src:
     kind: git
 
 dataset:
- value: ''
- version: ''
- workspace: ''
+ value: 'mnist'
+ version: '1.0.0'
+ workspace: 'kuberlab-demo'
  wizard:
    name: "Dataset configuration"
    kind: dataset
