@@ -2,7 +2,7 @@
 
 This is the base PyTORCH project.
 
-Conatains:
+Contains:
 
 - Jupyter for interactive development
 - Examples of training tasks
@@ -13,6 +13,7 @@ jupyter notebook **spatial_transformer_tutorial.ipynb**
 in the **src** directory using **Jupyter** after project installation.
 
 Steps to run spatial transformer as a separate task or on GPU:
+
 - Install project with default source repo and config
 - Go to tab "Tasks"
 - Choose "standalone" -> "worker"
