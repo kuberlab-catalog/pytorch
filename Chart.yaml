@@ -3,7 +3,6 @@ Engine: gotpl
 Home: http://kuberlab.com
 Icon: https://storage.googleapis.com/kuberlab-images/torch-logo.png
 Keywords:
-- kubernetes
 - PyTorch
 - template
 - kuberlab
