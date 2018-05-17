@@ -91,10 +91,10 @@ spec:
         cpu: "kuberlab/pytorch-converter:{{.pytorch_version.value}}-cpu-py2"
       {{- end }}
       command: >-
-        python torch2onnx.py --input $TRAINING_DIR/checkpoint.pth.tar --output $TRAINING_DIR/model.onnx
-        --model-class mnist:Net --input-shape 1,1,28,28;
-        python onnx2tf.py --input $TRAINING_DIR/model.onnx --output $TRAINING_DIR/tf_model/1;
-        # python upload_model.py --model-name mnist-pytorch-tf --version 1.0.0 --from-path $TRAINING_DIR/tf_model/1
+        python torch2onnx.py --input $TRAINING_DIR/checkpoint.pth.tar
+        --output $TRAINING_DIR/model.onnx --model-class mnist:Net --input-shape 1,1,28,28 &&
+        python onnx2tf.py --input $TRAINING_DIR/model.onnx --output $TRAINING_DIR/tf_model/1
+        # && python upload_model.py --model-name mnist-pytorch-tf --version 1.0.0 --from-path $TRAINING_DIR/tf_model/1
       workdir: "$EXAMPLES_DIR"
       resources:
         accelerators:
