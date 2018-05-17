@@ -42,6 +42,70 @@ spec:
           cpu: 1000m
           memory: 4Gi
       default_volume_mapping: true
+  - name: mnist-example
+    resources:
+    - name: worker
+      replicas: 1
+      restartPolicy: Never
+      maxRestartCount: 0
+      allowFail: true
+      {{- if eq .python_version.value "3" }}
+      images:
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
+      {{- end }}
+      {{- if eq .python_version.value "2" }}
+      images:
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
+      {{- end }}
+      command: >-
+        python mnist.py --data-dir $DATA_DIR --training_dir $TRAINING_DIR --out-dir $TRAINING_DIR
+        --batch-size 64 --epochs 3
+      workdir: "$EXAMPLES_DIR"
+      resources:
+        accelerators:
+          gpu: 0
+        requests:
+          cpu: 100m
+          memory: 64Mi
+        limits:
+          cpu: 3000m
+          memory: 4Gi
+      default_volume_mapping: true
+  - name: convert-to-tf
+    resources:
+    - name: worker
+      replicas: 1
+      restartPolicy: Never
+      maxRestartCount: 0
+      allowFail: true
+      {{- if eq .python_version.value "3" }}
+      images:
+        gpu: "kuberlab/pytorch-converter:{{.pytorch_version.value}}-gpu-py3"
+        cpu: "kuberlab/pytorch-converter:{{.pytorch_version.value}}-cpu-py3"
+      {{- end }}
+      {{- if eq .python_version.value "2" }}
+      images:
+        gpu: "kuberlab/pytorch-converter:{{.pytorch_version.value}}-gpu-py2"
+        cpu: "kuberlab/pytorch-converter:{{.pytorch_version.value}}-cpu-py2"
+      {{- end }}
+      command: >-
+        python torch2onnx.py --input $TRAINING_DIR/checkpoint.pth.tar --output $TRAINING_DIR/model.onnx
+        --model-class mnist:Net --input-shape 1,1,28,28;
+        python onnx2tf.py --input $TRAINING_DIR/model.onnx --output $TRAINING_DIR/tf_model/1;
+
+      workdir: "$EXAMPLES_DIR"
+      resources:
+        accelerators:
+          gpu: 0
+        requests:
+          cpu: 100m
+          memory: 64Mi
+        limits:
+          cpu: 1000m
+          memory: 4Gi
+      default_volume_mapping: true
   uix:
   - name: jupyter
     displayName: Jupyter
@@ -79,6 +143,11 @@ spec:
     isLibDir: false
     name: src
     subPath: {{ gitSubPath .src.value }}
+  - gitRepo:
+      repository: {{ gitRepo "https://github.com/kuberlab/pytorch-examples" }}
+    isLibDir: false
+    name: examples
+    subPath: {{ gitSubPath "https://github.com/kuberlab/pytorch-examples" }}
   - isLibDir: true
     name: lib
     clusterStorage: {{ .storage.value }}
