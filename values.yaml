@@ -5,16 +5,16 @@ storage:
    kind: cluster_storage
 
 pytorch_version:
-  value: "0.4.0"
+  value: "0.4.1"
   wizard:
     name: "PyTorch version"
     kind: select
     options:
     - "0.3.1"
-    - "0.4.0"
+    - "0.4.1"
 
 python_version:
-  value: "2"
+  value: "3"
   wizard:
     name: "Python version"
     kind: select
