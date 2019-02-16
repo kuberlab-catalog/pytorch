@@ -5,7 +5,7 @@ storage:
    kind: cluster_storage
 
 pytorch_version:
-  value: "0.4.1"
+  value: "1.0.0"
   wizard:
     name: "PyTorch version"
     kind: select
@@ -22,11 +22,23 @@ python_version:
     - "2"
     - "3"
 
+tensorboard:
+  value: false
+  wizard:
+    name: Install Tensorboard
+    kind: boolean
+
 src:
   value: https://github.com/kuberlab/pytorch-examples
   wizard:
     name: "Source Code"
     kind: git
+
+installExamples:
+  value: false
+  wizard:
+    name: Add Examples of ussage
+    kind: boolean
 
 dataset:
  value: 'mnist'
