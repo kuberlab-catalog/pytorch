@@ -37,7 +37,7 @@ src:
 installExamples:
   value: false
   wizard:
-    name: Add Examples of ussage
+    name: Add examples
     kind: boolean
 
 dataset:
