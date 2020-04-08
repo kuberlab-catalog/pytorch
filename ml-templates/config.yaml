@@ -2,13 +2,13 @@ kind: MLApp
 metadata:
   name: pytorch
 spec:
-  package_manager: "pip{{.python_version.value}}"
+  package_manager: "pip3"
   packages:
     - names:
       {{- range $i, $value := .packages }}
       - "{{ $value }}"
       {{- end }}
-      manager: "pip{{.python_version.value}}"
+      manager: "pip3"
   default_mount_path: "/notebooks"
   tasks:
   - name: standalone
@@ -18,16 +18,9 @@ spec:
       restartPolicy: Never
       maxRestartCount: 0
       allowFail: true
-      {{- if eq .python_version.value "3" }}
       images:
-        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
-        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
-      {{- end }}
-      {{- if eq .python_version.value "2" }}
-      images:
-        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
-        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
-      {{- end }}
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu"
       command: >-
         python spatial_transformer.py --batch-size 64 --epochs 10
         --data-dir $DATA_DIR --training_dir $TRAINING_DIR
@@ -50,16 +43,9 @@ spec:
       restartPolicy: Never
       maxRestartCount: 0
       allowFail: true
-      {{- if eq .python_version.value "3" }}
       images:
-        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
-        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
-      {{- end }}
-      {{- if eq .python_version.value "2" }}
-      images:
-        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
-        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
-      {{- end }}
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu"
       command: >-
         python mnist.py --data-dir $DATA_DIR --training_dir $TRAINING_DIR --out-dir $TRAINING_DIR
         --batch-size 64 --epochs 3
@@ -83,16 +69,9 @@ spec:
       restartPolicy: Never
       maxRestartCount: 0
       allowFail: true
-      {{- if eq .python_version.value "3" }}
       images:
-        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
-        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
-      {{- end }}
-      {{- if eq .python_version.value "2" }}
-      images:
-        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
-        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
-      {{- end }}
+        gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu"
+        cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu"
       command: >-
         torch2tf --input $TRAINING_DIR/checkpoint.pth.tar
         --model-class mnist:Net --input-shape 1,1,28,28 --output $TRAINING_DIR/tf_model
@@ -112,16 +91,9 @@ spec:
   uix:
   - name: jupyter
     displayName: Jupyter
-    {{- if eq .python_version.value "3"}}
     images:
-      gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py3"
-      cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py3"
-    {{- end }}
-    {{- if eq .python_version.value "2" }}
-    images:
-      gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu-py2"
-      cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu-py2"
-    {{- end }}
+      gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu"
+      cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu"
     resources:
       accelerators:
         gpu: 0
@@ -142,8 +114,8 @@ spec:
     displayName: Tensorboard
     command: "tensorboard --logdir=$TRAINING_DIR"
     images:
-      gpu: "kuberlab/fastai:latest-gpu"
-      cpu: "kuberlab/fastai:latest-cpu"
+      gpu: "kuberlab/pytorch:{{.pytorch_version.value}}-gpu"
+      cpu: "kuberlab/pytorch:{{.pytorch_version.value}}-cpu"
     ports:
     - port: 6006
       targetPort: 6006
@@ -154,32 +126,28 @@ spec:
         cpu: 50m
         memory: 64Mi
       limits:
-        cpu: 15000m
+        cpu: 1500m
         memory: 4Gi
     volumes:
     - name: training
   {{- end }}
   volumes:
-  - isLibDir: false
-    name: training
+  - name: training
     clusterStorage: {{ .storage.value }}
   - gitRepo:
       repository: {{ gitRepo .src.value }}
-    isLibDir: false
     name: src
     subPath: {{ gitSubPath .src.value }}
   {{- if .installExamples.value }}
   - gitRepo:
       repository: {{ gitRepo "https://github.com/kuberlab/pytorch-examples" }}
-    isLibDir: false
     name: examples
     subPath: {{ gitSubPath "https://github.com/kuberlab/pytorch-examples" }}
   {{- end }}
   - isLibDir: true
     name: lib
     clusterStorage: {{ .storage.value }}
-  - isLibDir: false
-    name: data
+  - name: data
     {{- if .dataset.value }}
     datasetFS:
       workspace: {{ .dataset.workspace }}
@@ -188,8 +156,7 @@ spec:
     {{- else }}
     clusterStorage: {{ .storage.value }}
     {{- end }}
-  - isLibDir: false
-    mountPath: /notebooks
+  - mountPath: /notebooks
     name: code
     subPath: code
     clusterStorage: {{ .storage.value }}
