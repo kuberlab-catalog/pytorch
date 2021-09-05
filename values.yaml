@@ -5,7 +5,7 @@ storage:
    kind: cluster_storage
 
 pytorch_version:
-  value: "1.5.0"
+  value: "1.9.0"
   wizard:
     name: "PyTorch version"
     kind: select
@@ -18,7 +18,7 @@ pytorch_version:
     - "1.9.0"
 
 tensorboard:
-  value: false
+  value: true
   wizard:
     name: Install Tensorboard
     kind: boolean
