@@ -1,6 +1,6 @@
 Description: PyTorch
 Engine: gotpl
-Home: http://kuberlab.com
+Home: http://kibernetika.ai
 Icon: https://storage.googleapis.com/kuberlab-images/torch-logo.png
 Keywords:
 - PyTorch
@@ -8,8 +8,8 @@ Keywords:
 - kuberlab
 - kuberlabapptemplate
 Maintainers:
-- Email: agunin@kuberlab.com
+- Email: agunin@kibernetika.ai
   Name: Gunin Alexander
 Name: PyTorch
-Version: 1.0.0
+Version: 1.9.1
 Type: mlapp-v2
